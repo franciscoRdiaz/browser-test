@@ -38,10 +38,10 @@ public class DockerService implements Serializable {
         return result;
     }
 
-    public String getGatewayFromContainer(String containerName) {
+    public String getContainerIp(String containerName) {
         String gateway = null;
         gateway = executeDockerCommand("docker", "inspect",
-                "--format=\\\"{{.NetworkSettings.Networks.elastest_elastest.Gateway}}\\\"",
+                "--format=\\\"{{.NetworkSettings.Networks.bridge.IPAddress}}\\\"",
                 containerName);
         LOG.info("Docker network gateway: {}", gateway);
         return gateway.replaceAll("\\\\\"", "");

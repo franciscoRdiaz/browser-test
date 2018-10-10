@@ -55,7 +55,7 @@ public class BrowserTest {
         docker = DockerService
                 .getDockerService(DockerService.DOCKER_HOST_BY_DEFAULT);
         containerId = this.startBrowser();
-        String hubUrl = "http://localhost:4444/wd/hub";
+        String hubUrl = "http://" + docker.getContainerIp(containerId) + ":4444/wd/hub";
         try {
             driver = new RemoteWebDriver(new URL(hubUrl), setupBrowser());
             driver.manage().timeouts().implicitlyWait(5, SECONDS);
