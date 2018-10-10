@@ -35,7 +35,8 @@ public class BrowserTest {
     private static final Logger LOG = getLogger(lookup().lookupClass());
     private DockerService docker;
     public WebDriver driver;
-    private String browser = "chrome";
+    private String bName = "chrome";
+    private String browser = "elastestbrowsers/chrome";
     private String browserVersion = "latest";
     public String containerId;
     public String commands = "git clone https://github.com/elastest/elastest-user-emulator-service;"
@@ -46,6 +47,10 @@ public class BrowserTest {
         // Load browser name and version
         if (getProperty("eBrowser") != null) {
             browser = getProperty("eBrowser");
+        }
+        
+        if (getProperty("eBName") != null) {
+            bName = getProperty("eBName");
         }
 
         if (getProperty("eBVersion") != null) {
@@ -74,7 +79,7 @@ public class BrowserTest {
                 "--name", "chrome", "-p", "4444:4444", "-p", "6080:6080", "-p",
                 "5900:5900", "--cap-add=SYS_ADMIN", "-v",
                 System.getenv("PWD") + "/recordings:/home/ubuntu/recordings",
-                "elastestbrowsers/" + browser + ":" + browserVersion);
+                browser + ":" + browserVersion);
 
         return containerId;
     }
@@ -85,9 +90,9 @@ public class BrowserTest {
 
     public DesiredCapabilities setupBrowser() throws MalformedURLException {
         DesiredCapabilities caps;
-        caps = !browser.equals("chrome") ? DesiredCapabilities.firefox()
+        caps = !bName.equals("chrome") ? DesiredCapabilities.firefox()
                 : DesiredCapabilities.chrome();
-        caps.setCapability("browserId", browser + "_" + browserVersion);
+        caps.setCapability("browserId", bName + "_" + browserVersion);
         return caps;
     }
 
