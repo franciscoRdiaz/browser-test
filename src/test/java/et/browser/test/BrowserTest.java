@@ -94,6 +94,7 @@ public class BrowserTest {
     @Test
     @DisplayName("Check the Sendkeys operation with a textarea")
     public void testSendKeysWithTextArea() throws InterruptedException {
+        Thread.sleep(5000);
         LOG.info("Check browser operation.");
         driver.get(
                 "https://www.w3schools.com/tags/tryit.asp?filename=tryhtml_textarea");
