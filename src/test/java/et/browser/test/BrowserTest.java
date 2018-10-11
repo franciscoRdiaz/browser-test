@@ -44,6 +44,9 @@ public class BrowserTest {
 
     @BeforeAll
     public void init() {
+        //Check if the ET_EUS_API env var exists
+        String eusUrl = System.getenv("ET_EUS_API");
+        
         // Load browser name and version
         if (getProperty("eBrowser") != null) {
             browser = getProperty("eBrowser");
@@ -57,10 +60,15 @@ public class BrowserTest {
             browserVersion = getProperty("eBVersion");
         }
 
-        docker = DockerService
-                .getDockerService(DockerService.DOCKER_HOST_BY_DEFAULT);
-        containerId = this.startBrowser();
-        String hubUrl = "http://" + docker.getContainerIp(containerId) + ":4444/wd/hub";
+        String hubUrl = null;
+        if (eusUrl != null && !eusUrl.isEmpty()) {
+            hubUrl = eusUrl;
+        } else {
+            docker = DockerService
+                    .getDockerService(DockerService.DOCKER_HOST_BY_DEFAULT);
+            containerId = this.startBrowser();
+            hubUrl = "http://" + docker.getContainerIp(containerId) + ":4444/wd/hub";
+        }
         try {
             driver = new RemoteWebDriver(new URL(hubUrl), setupBrowser());
             driver.manage().timeouts().implicitlyWait(5, SECONDS);
