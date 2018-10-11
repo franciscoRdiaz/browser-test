@@ -101,6 +101,7 @@ public class BrowserTest {
         caps = !bName.equals("chrome") ? DesiredCapabilities.firefox()
                 : DesiredCapabilities.chrome();
         caps.setCapability("browserId", bName + "_" + browserVersion);
+        caps.setCapability("version", browserVersion);
         return caps;
     }
 
