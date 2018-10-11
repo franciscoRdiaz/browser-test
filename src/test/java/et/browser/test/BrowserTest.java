@@ -41,11 +41,12 @@ public class BrowserTest {
     public String containerId;
     public String commands = "git clone https://github.com/elastest/elastest-user-emulator-service;"
             + "cd elastest-user-emulator-service/tjob-test;mvn test;";
+    public String eusUrl = null;
 
     @BeforeAll
     public void init() {
         //Check if the ET_EUS_API env var exists
-        String eusUrl = System.getenv("ET_EUS_API");
+        eusUrl = System.getenv("ET_EUS_API");
         
         // Load browser name and version
         if (getProperty("eBrowser") != null) {
@@ -79,7 +80,9 @@ public class BrowserTest {
 
     @AfterAll
     public void teardown() {
-        stopBrowser(containerId);
+        if (eusUrl == null) {
+            stopBrowser(containerId);
+        }
     }
 
     public String startBrowser() {
