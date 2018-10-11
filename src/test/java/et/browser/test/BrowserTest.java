@@ -92,7 +92,8 @@ public class BrowserTest {
                 logEntries.forEach((entry) -> LOG.info("[{}] {} {}",
                         new Date(entry.getTimestamp()), entry.getLevel(),
                         entry.getMessage()));
-                driver.close();
+//                driver.close();
+                driver.quit();
             }
         }
     }
