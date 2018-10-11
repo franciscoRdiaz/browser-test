@@ -4,10 +4,12 @@ import static java.lang.System.getProperty;
 import static java.lang.invoke.MethodHandles.lookup;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.openqa.selenium.logging.LogType.BROWSER;
 import static org.slf4j.LoggerFactory.getLogger;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Date;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -19,6 +21,7 @@ import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.logging.LogEntries;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.slf4j.Logger;
@@ -82,6 +85,15 @@ public class BrowserTest {
     public void teardown() {
         if (eusUrl == null) {
             stopBrowser(containerId);
+        } else {
+            if (driver != null) {
+                LOG.info("Browser console at the end of the test");
+                LogEntries logEntries = driver.manage().logs().get(BROWSER);
+                logEntries.forEach((entry) -> LOG.info("[{}] {} {}",
+                        new Date(entry.getTimestamp()), entry.getLevel(),
+                        entry.getMessage()));
+                driver.close();
+            }
         }
     }
 
